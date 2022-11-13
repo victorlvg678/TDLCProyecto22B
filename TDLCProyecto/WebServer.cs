@@ -6,10 +6,12 @@ namespace TDLCProyecto
     public class WebServer
     {
         private readonly string _baseURL;
+        private bool _running;
 
         public WebServer(string baseURL)
         {
             _baseURL = baseURL;
+            _running = true;
         }
 
         public void Start()
@@ -28,32 +30,48 @@ namespace TDLCProyecto
                 int requests = 0;
                 logger.Information($"Listening on \"{_baseURL}\"...");
 
-                while (true)
+                while (_running)
                 {
-                    System.Net.HttpListenerContext ctx = listener.GetContext();
+                    System.Net.HttpListenerContext context = listener.GetContext();
                     System.Threading.Tasks.TaskFactory taskFactory = new System.Threading.Tasks.TaskFactory();
 
                     requests++;
-                    Request request = new Request(ctx.Request, requests);
+                    Request request = new Request(context.Request, requests);
                     logger.Debug(request.ToString());
 
                     Task task = taskFactory.StartNew(() => 
                     {
                         string methodName = "";
                         
-                        if (ctx.Request?.Url?.Segments.Count() > 1)
-                            methodName = ctx.Request.Url.Segments[1].Replace("/", "");
+                        if (context.Request?.Url?.Segments.Count() > 1)
+                            methodName = context.Request.Url.Segments[1].Replace("/", "");
 
                         if (string.IsNullOrWhiteSpace(methodName))
                         {
                             logger.Information("User requested /");
-                            //HttpListenerResponse
                         };
-                        
 
+                        using (System.Net.HttpListenerResponse response = context.Response)
+                        {
+                            response.Headers.Set("Content-Type", "text/plain");
+
+                            string data = "Hello there!";
+                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(data);
+                            response.ContentLength64 = buffer.Length;
+
+                            using (Stream ros = response.OutputStream)
+                            {
+                                ros.Write(buffer, 0, buffer.Length);
+                            }
+                        }
                     });
                 }
             }
+        }
+
+        public void Stop()
+        { 
+            _running = false;
         }
     }
 }
