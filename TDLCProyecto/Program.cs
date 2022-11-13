@@ -6,7 +6,7 @@
         {
             string schema = Environment.GetEnvironmentVariable("APP_SCHEMA") ?? "http";
             string base_url = Environment.GetEnvironmentVariable("APP_BASE_URL") ?? "localhost";
-            string port = Environment.GetEnvironmentVariable("APP_PORT") ?? "9091";
+            string port = Environment.GetEnvironmentVariable("PORT") ?? "9091";
 
             WebServer webServer = new WebServer($"{schema}://{base_url}:{port}/");
             try
