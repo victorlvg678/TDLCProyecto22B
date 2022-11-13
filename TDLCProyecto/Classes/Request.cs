@@ -18,24 +18,31 @@ namespace TDLCProyecto.Classes
             _sequence = sequence;
         }
 
-        public override string ToString()
-        {
-            if (_request == null)
-                return string.Empty;
-
+        public async Task<string> getBody()
+        { 
             Stream bodyStream = _request.InputStream;
             byte[] bodyData = new byte[_request.ContentLength64];
             Task<int> bodyStreamTask = bodyStream.ReadAsync(bodyData, 0, (int) _request.ContentLength64);
+            
+            bodyStreamTask.Wait();
+            
+            return Encoding.UTF8.GetString(bodyData);
+        }
 
-            StringBuilder stringBuilder = new StringBuilder();
-
+        public List<Header> getHeaders()
+        { 
             NameValueCollection nameValueCollection = _request.Headers;
-            var headers = nameValueCollection.AllKeys.SelectMany(nameValueCollection.GetValues, (key, value) => new { Key = key, Value = value });
+            return nameValueCollection.AllKeys.SelectMany(nameValueCollection.GetValues, (key, value) => new Header(key, value)).ToList();
+        }
+
+        public StringBuilder getRequestData()
+        { 
+            StringBuilder stringBuilder = new StringBuilder();
 
             stringBuilder.AppendLine($"\nRequest #{_sequence}");
             stringBuilder.AppendLine("\nHeaders:{");
 
-            foreach (var header in headers)
+            foreach (Header header in getHeaders())
                 stringBuilder.AppendLine($"\t{header.Key}: \"{header.Value}\";");
             
             stringBuilder.AppendLine("}");
@@ -43,10 +50,19 @@ namespace TDLCProyecto.Classes
             stringBuilder.AppendLine($"URL: \"{_request.Url}\"");
             stringBuilder.AppendLine($"Method: {_request.HttpMethod}");
 
-            bodyStreamTask.Wait();
+            return stringBuilder;
+        }
 
-            if (bodyStreamTask.IsCompleted)
-                stringBuilder.AppendLine($"body: {{\" {Encoding.UTF8.GetString(bodyData)} \"}}");
+
+        public override string ToString()
+        {
+            if (_request == null)
+                return string.Empty;
+
+            Task<string> bodyTask = getBody();
+            StringBuilder stringBuilder = getRequestData();
+
+            stringBuilder.AppendLine($"body: {{\"{bodyTask.Result}\"}}");
 
             return stringBuilder.ToString();
         }
