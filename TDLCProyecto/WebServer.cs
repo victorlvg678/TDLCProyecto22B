@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using TDLCProyecto.Classes;
+using TDLCProyecto.Controllers;
 
 namespace TDLCProyecto
 {
@@ -14,15 +15,8 @@ namespace TDLCProyecto
             _running = true;
         }
 
-        public void Start()
+        public void Start(ILogger logger)
         {
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console()
-                .CreateLogger();
-
-            ILogger logger = Log.Logger; 
-            
             using (System.Net.HttpListener listener = new System.Net.HttpListener())
             {
                 listener.Prefixes.Add(_baseURL);
@@ -39,26 +33,25 @@ namespace TDLCProyecto
                     Request request = new Request(context.Request, requests);
                     logger.Debug(request.ToString());
 
+                    Task<string> bodyTask = request.getBody();
+
                     Task task = taskFactory.StartNew(() => 
                     {
-                        string methodName = "";
+                        request.Controller = "";
                         
                         if (context.Request?.Url?.Segments.Count() > 1)
-                            methodName = context.Request.Url.Segments[1].Replace("/", "");
-
-                        if (string.IsNullOrWhiteSpace(methodName))
-                        {
-                            logger.Information("User requested /");
-                        };
+                            request.Controller = context.Request.Url.Segments[1].Replace("/", "");
 
                         using (System.Net.HttpListenerResponse response = context.Response)
                         {
-                            response.Headers.Set("Content-Type", "text/plain");
-
-                            string data = "Hello there!";
-                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(data);
+                            string body = bodyTask.Result;
+                            Response resp = request.getMethod().Equals("POST") ?
+                                SendDataToController(request, logger) : ErrorController.getMethodNotAllowed($"{request.getMethod()} method not allowed", logger);
+                            
+                            response.Headers.Set("Content-Type", "text/json");
+                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(resp.Content);
                             response.ContentLength64 = buffer.Length;
-
+                            response.StatusCode = resp.StatusCode;
                             using (Stream ros = response.OutputStream)
                             {
                                 ros.Write(buffer, 0, buffer.Length);
@@ -67,6 +60,15 @@ namespace TDLCProyecto
                     });
                 }
             }
+        }
+
+        public Response SendDataToController(Request request, ILogger logger)
+        { 
+            return request.Controller switch
+            {
+                "getNextState" => LexicalAnalyzerController.getNextState(request, logger),
+                _ => ErrorController.getNotFound("Controller not found", logger)
+            };
         }
 
         public void Stop()
