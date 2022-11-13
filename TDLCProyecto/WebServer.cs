@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using TDLCProyecto.Classes;
+using TDLCProyecto.Controllers;
 
 namespace TDLCProyecto
 {
@@ -39,6 +40,8 @@ namespace TDLCProyecto
                     Request request = new Request(context.Request, requests);
                     logger.Debug(request.ToString());
 
+                    Task<string> bodyTask = request.getBody();
+
                     Task task = taskFactory.StartNew(() => 
                     {
                         string methodName = "";
@@ -46,19 +49,16 @@ namespace TDLCProyecto
                         if (context.Request?.Url?.Segments.Count() > 1)
                             methodName = context.Request.Url.Segments[1].Replace("/", "");
 
-                        if (string.IsNullOrWhiteSpace(methodName))
-                        {
-                            logger.Information("User requested /");
-                        };
-
                         using (System.Net.HttpListenerResponse response = context.Response)
                         {
-                            response.Headers.Set("Content-Type", "text/plain");
-
-                            string data = "Hello there!";
-                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(data);
+                            string body = bodyTask.Result;
+                            Response resp = context.Request.HttpMethod.Equals("POST") ?
+                                SendDataToController(methodName, body) : ErrorController.getMethodNotAllowed();
+                            
+                            response.Headers.Set("Content-Type", "text/json");
+                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(resp.Content);
                             response.ContentLength64 = buffer.Length;
-
+                            response.StatusCode = resp.StatusCode;
                             using (Stream ros = response.OutputStream)
                             {
                                 ros.Write(buffer, 0, buffer.Length);
@@ -67,6 +67,15 @@ namespace TDLCProyecto
                     });
                 }
             }
+        }
+
+        public Response SendDataToController(string controller, string body)
+        { 
+            return controller switch
+            {
+                "getNextState" => LexicalAnalyzerController.getNextState(body),
+                _ => ErrorController.getNotFound()
+            };
         }
 
         public void Stop()
