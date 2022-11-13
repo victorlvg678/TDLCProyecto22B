@@ -1,4 +1,4 @@
-﻿using TDLCProyecto.Classes;
+using TDLCProyecto.Classes;
 using Newtonsoft.Json;
 using Serilog;
 

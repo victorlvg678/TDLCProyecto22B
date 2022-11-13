@@ -1,4 +1,4 @@
-﻿using System.Net;
+using System.Net;
 using System.Text;
 using System.Collections.Specialized;
 
@@ -30,7 +30,7 @@ namespace TDLCProyecto.Classes
             { 
                 return _body;
             }
-
+            
             Stream bodyStream = _request.InputStream;
             byte[] bodyData = new byte[_request.ContentLength64];
             Task<int> bodyStreamTask = bodyStream.ReadAsync(bodyData, 0, (int) _request.ContentLength64);
@@ -39,6 +39,7 @@ namespace TDLCProyecto.Classes
             
             return Encoding.UTF8.GetString(bodyData);
         }
+
 
         public string getMethod() => _method;
 
@@ -71,17 +72,17 @@ namespace TDLCProyecto.Classes
             stringBuilder.AppendLine($"URL: \"{_request.Url}\"");
             stringBuilder.AppendLine($"Method: {_method}");
 
+
             stringBuilder.AppendLine($"body: {{\"{_body}\"}}");
 
             return stringBuilder;
         }
 
-
         public override string ToString()
         {
             if (_request == null)
                 return string.Empty;
-;
+                
             return getRequestData().ToString();
         }
         #endregion

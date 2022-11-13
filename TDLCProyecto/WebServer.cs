@@ -1,4 +1,4 @@
-﻿using Serilog;
+using Serilog;
 using TDLCProyecto.Classes;
 using TDLCProyecto.Controllers;
 
@@ -42,11 +42,14 @@ namespace TDLCProyecto
                         if (context.Request?.Url?.Segments.Count() > 1)
                             request.Controller = context.Request.Url.Segments[1].Replace("/", "");
 
+
                         using (System.Net.HttpListenerResponse response = context.Response)
                         {
                             string body = bodyTask.Result;
+                            
                             Response resp = request.getMethod().Equals("POST") ?
                                 SendDataToController(request, logger) : ErrorController.getMethodNotAllowed($"{request.getMethod()} method not allowed", logger);
+
                             
                             response.Headers.Set("Content-Type", "text/json");
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(resp.Content);
