@@ -31,7 +31,6 @@ namespace TDLCProyecto
             };
             _allowMethods = new string[]
             {
-                "GET",
                 "POST",
                 "OPTIONS"
             };
@@ -72,6 +71,7 @@ namespace TDLCProyecto
                             Response resp = request.getMethod() switch
                             {
                                 "POST" => SendDataToController(request, logger),
+                                "OPTIONS" => CORSController.getCORSResponse(request, logger),
                                 _ => ErrorController.getMethodNotAllowed($"{request.getMethod()} method not allowed", logger)
                             };
 
