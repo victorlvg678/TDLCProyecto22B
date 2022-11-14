@@ -8,11 +8,33 @@ namespace TDLCProyecto
     {
         private readonly string _baseURL;
         private bool _running;
+        private readonly string[] _allowHeaders;
+        private readonly string[] _allowMethods;
 
         public WebServer(string baseURL)
         {
             _baseURL = baseURL;
             _running = true;
+            _allowHeaders = new string[] {
+                "Content-Type",
+                "Accept",
+                "Accept-Encoding",
+                "Accept-Language",
+                "Access-Control-Request-Headers",
+                "Access-Control-Request-Method",
+                "Connection",
+                "Origin",
+                "Sec-Fetch-Dest",
+                "Sec-Fetch-Mode",
+                "Sec-Fetch-Site",
+                "User-Agent"
+            };
+            _allowMethods = new string[]
+            {
+                "GET",
+                "POST",
+                "OPTIONS"
+            };
         }
 
         public void Start(ILogger logger)
@@ -46,10 +68,19 @@ namespace TDLCProyecto
                         using (System.Net.HttpListenerResponse response = context.Response)
                         {
                             string body = bodyTask.Result;
-                            
-                            Response resp = request.getMethod().Equals("POST") ?
-                                SendDataToController(request, logger) : ErrorController.getMethodNotAllowed($"{request.getMethod()} method not allowed", logger);
 
+                            Response resp = request.getMethod() switch
+                            {
+                                "POST" => SendDataToController(request, logger),
+                                _ => ErrorController.getMethodNotAllowed($"{request.getMethod()} method not allowed", logger)
+                            };
+
+                            if (request.getMethod().Equals("OPTIONS"))
+                            {
+                                response.Headers.Set("Access-Control-Allow-Headers", string.Join(",", _allowHeaders));
+                                response.Headers.Set("Access-Control-Allow-Methods", string.Join(",", _allowMethods));
+                                response.Headers.Set("Access-Control-Max-Age", "1728000");
+                            }
                             
                             response.Headers.Set("Content-Type", "application/json");
                             response.Headers.Set("Access-Control-Allow-Origin", "*");
