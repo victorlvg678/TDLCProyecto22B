@@ -40,13 +40,15 @@ async function changeState() {
 
 function getNextState() {
     getInput();
-    changeState()
-        .then((data) => {
-            console.log(data);
-            lexicalAnalyzer.input = data.input;
-            lexicalAnalyzer.currentChar = data.currentChar;
-            lexicalAnalyzer.state = data.state;
-        });
+    if (lexicalAnalyzer.currentChar < lexicalAnalyzer.input.length) {
+        changeState()
+            .then((data) => {
+                console.log(data);
+                lexicalAnalyzer.input = data.input;
+                lexicalAnalyzer.currentChar = data.currentChar;
+                lexicalAnalyzer.state = data.state;
+            });
+    }
 }
 
 function sleep(ms) {
@@ -56,7 +58,7 @@ function sleep(ms) {
 async function analyzeString() {
     getInput();
     await sleep(500);
-    while (lexicalAnalyzer.currentChar != lexicalAnalyzer.input.length) {
+    while (lexicalAnalyzer.currentChar < lexicalAnalyzer.input.length) {
 
         const response = await changeState();
 
