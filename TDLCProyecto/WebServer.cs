@@ -82,7 +82,8 @@ namespace TDLCProyecto
                                 response.Headers.Set("Access-Control-Max-Age", "1728000");
                             }
                             
-                            response.Headers.Set("Content-Type", "text/json");
+                            response.Headers.Set("Content-Type", "application/json");
+                            response.Headers.Set("Access-Control-Allow-Origin", "*");
                             byte[] buffer = System.Text.Encoding.UTF8.GetBytes(resp.Content);
                             response.ContentLength64 = buffer.Length;
                             response.StatusCode = resp.StatusCode;
