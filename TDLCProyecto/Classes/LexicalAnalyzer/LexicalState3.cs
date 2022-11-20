@@ -15,12 +15,12 @@
             LexicalBaseState nextState = symbol switch
             {
                 (>= '0') and (<= '9') => new LexicalState3(_lexicalAnalyzer),
-                '.' => new LexicalState4(_lexicalAnalyzer),
-                'E' => new LexicalState6(_lexicalAnalyzer),
                 '+' => new LexicalState9(_lexicalAnalyzer),
                 '-' => new LexicalState9(_lexicalAnalyzer),
                 '*' => new LexicalState9(_lexicalAnalyzer),
                 '/' => new LexicalState9(_lexicalAnalyzer),
+                '.' => new LexicalState4(_lexicalAnalyzer),
+                'E' => new LexicalState6(_lexicalAnalyzer),
                 _ => new LexicalStateInvalid(_lexicalAnalyzer)
             };
 
