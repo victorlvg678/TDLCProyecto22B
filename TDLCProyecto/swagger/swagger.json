@@ -1,0 +1,155 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "v1",
+        "title": "TDLC Proyecto"
+    },
+    "host": "localhost",
+    "schemes": [ "http", "https" ],
+    "paths": {
+        "/getNextState": {
+          "post": {
+            "tags": [ "LexicalAnalyzer" ],
+            "summary": "Get next state",
+            "operationId": "LexicalAnalyzer_getNextState",
+            "consumes": [ "application/json" ],
+            "produces": [ "application/json" ],
+            "responses": {
+              "200": {
+                "description": "OK",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseMessage"
+                  }
+                }
+              },
+              "400": {
+                "description": "Bad request",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseErrorMessage"
+                  }
+                }
+              },
+              "401": {
+                "description": "Unauthorized",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseErrorMessage"
+                  }
+                }
+              },
+              "403": {
+                "description": "Forbidden",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseErrorMessage"
+                  }
+                }
+              },
+              "404": {
+                "description": "Not found",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseErrorMessage"
+                  }
+                }
+              },
+              "405": {
+                "description": "Method not allowed",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseErrorMessage"
+                  }
+                }
+              },
+              "406": {
+                "description": "Not Acceptable",
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/ResponseErrorMessage"
+                  }
+                }
+              }
+            },
+            "parameters": [
+              {
+                "name": "lexicalanalysis",
+                "in": "body",
+                "description": "Lexical Analysis",
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/definitions/InputLexicalAnalyzer"
+                  }
+                }
+              }
+            ]
+          }
+        }
+    },
+  "definitions": {
+    "ResponseMessage": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string",
+          "description": "Input to analyze"
+        },
+        "currentChar": {
+          "type": "integer",
+          "description": "Current char analyzing"
+        },
+        "state": {
+          "type": "integer",
+          "description": "Current state on Finite State Machine for Lexical Analysis"
+        },
+        "message": {
+          "type": "string",
+          "description": "Response message"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Result of operation"
+        }
+      }
+    },
+    "ResponseErrorMessage": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "description": "Response message"
+        },
+        "success": {
+          "type": "boolean",
+          "description": "Result of operation"
+        }
+      }
+    },
+    "InputLexicalAnalyzer": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "string",
+          "description": "Input to analyze"
+        },
+        "currentChar": {
+          "type": "integer",
+          "description": "Current char analyzing"
+        },
+        "state": {
+          "type": "integer",
+          "description": "Current state on Finite State Machine for Lexical Analysis"
+        }
+      }
+    }
+  }
+}
