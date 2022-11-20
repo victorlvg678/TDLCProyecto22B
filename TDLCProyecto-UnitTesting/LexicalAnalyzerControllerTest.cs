@@ -100,7 +100,7 @@ namespace TDLCProyecto_UnitTesting
 
         [Theory(DisplayName = "Check if validates correct integer numbers")]
         [InlineData("123")]
-        [InlineData("0")]
+        [InlineData("1")]
         [InlineData("12456")]
         [InlineData("420")]
         [InlineData("13")]
@@ -163,8 +163,8 @@ namespace TDLCProyecto_UnitTesting
 
         [Theory(DisplayName = "Check if validates correct float numbers")]
         [InlineData("4.20")]
-        [InlineData("0.1")]
-        [InlineData("0.001")]
+        [InlineData("1.1")]
+        [InlineData("1.001")]
         [InlineData("420.69")]
         [InlineData("123.321")]
         [InlineData("+4.20")]
