@@ -14,12 +14,12 @@
         {
             LexicalBaseState nextState = symbol switch
             {
-                (>= 'A') and (<= 'Z') => new LexicalState1(_lexicalAnalyzer),
                 (>= 'a') and (<= 'z') => new LexicalState1(_lexicalAnalyzer),
+                (>= 'A') and (<= 'Z') => new LexicalState1(_lexicalAnalyzer),
                 '_' => new LexicalState1(_lexicalAnalyzer),
                 '+' => new LexicalState2(_lexicalAnalyzer),
                 '-' => new LexicalState2(_lexicalAnalyzer),
-                (>= '0') and (<= '9') => new LexicalState3(_lexicalAnalyzer),
+                (>= '1') and (<= '9') => new LexicalState3(_lexicalAnalyzer),
                 _ => new LexicalStateInvalid(_lexicalAnalyzer)
             };
 
