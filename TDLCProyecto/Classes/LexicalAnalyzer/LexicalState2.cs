@@ -14,7 +14,7 @@
         {
             LexicalBaseState nextState = symbol switch
             {
-                (>= '0') and (<= '9') => new LexicalState3(_lexicalAnalyzer),
+                (>= '1') and (<= '9') => new LexicalState3(_lexicalAnalyzer),
                 _ => new LexicalStateInvalid(_lexicalAnalyzer)
             };
 
