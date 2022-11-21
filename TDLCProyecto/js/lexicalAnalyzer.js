@@ -126,7 +126,6 @@ function updateTokenList() {
         return;
 
     statesList.map((element) => {
-
         if ((element.state == lexicalAnalyzer.state && tokens.length == 0) || (element.state == lexicalAnalyzer.state && tokens[tokens.length - 1].state != element.state)) {
             tokenList.value += element.token + "\n";
             var newToken = { state: element.state, token: element.token };
