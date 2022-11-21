@@ -41,6 +41,7 @@ function clearInputTextbox() {
 
     lexicalAnalyzer = new LexicalAnalyzer();
     tokenCurrentState = 0;
+    tokens = Array();
 
     if (input != null) {
         input.disabled = false;
