@@ -4,61 +4,243 @@
     <meta charset="utf-8" />
     <title>TDLC Proyecto</title>
     <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="../css/bootstrap.min.css" integrity="sha384-GpZ+McEis3rxQ2mOiwBzW8NQ7NvjXIsQsIRqV/8QJ2qDR4vdZSe0GrxMctJv74R7" crossorigin="anonymous">
     <script type="text/javascript" src="../js/lexicalAnalyzer.js"></script>
+    <script src="../js/jquery-3.2.1.slim.min.js" integrity="sha384-nhAE5F/IULHjj7zkPRDgZt8Y1T0rjZZbMAy/xzRdLkz9y0XB9sYpioKjeIBrB6jY" crossorigin="anonymous"></script>
+    <script src="../js/popper.min.js" integrity="sha384-pNovaElo1D1KMSDhyjlgzWzyKBFUAiE7uKtjl/kj/7ECT1PPe5YnLD5vnWbU9nvV" crossorigin="anonymous"></script>
+    <script src="../js/bootstrap.min.js" integrity="sha384-/VDWkH4VukNJ5zgo0o3hx2681xuIAUYQq4hQprhdx0GnptNk7gk9kqH8yv6tEcwM" crossorigin="anonymous"></script>
 </head>
 <body>
-    <input id="inputString" type="text" value="" placeholder="Escribe cadena a evaluar" />
-    <button onclick="javascript: getNextState();">Siguiente estado</button>
-    <button onclick="javascript: analyzeString();">Análisis de cadena</button>
+    <div class="screen">
+        <div class="column1">
+            <h2 id="lexicalAnalyzerTitle">Analizador léxico</h2>
+            <div class="input-group">
+                <input id="inputString" type="text" class="form-control" value="" placeholder="Escribe cadena a evaluar" aria-label="Escribe cadena a evaluar" aria-describedby="basic-addon2">
 
-    <!-- Lexical Analyzer Automata -->
-    <div id="lexicalAnalyzerAutomata" class="center">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-                <marker id="arrowhead" markerWidth="5" markerHeight="3.5"
-                        refX="0" refY="1.5" orient="auto">
-                    <polygon points="0 0, 2 1.5, 0 3" fill="dimgray" />
-                </marker>
-            </defs>
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" onclick="javascript: getNextState();">Siguiente</button>
+                    <button class="btn btn-primary" type="button" onclick="javascript: analyzeString();">Analizar</button>
+                    <button class="btn btn-primary" type="button" onclick="javascript: clearInputTextbox();">Limpiar</button>
+                </div>
+            </div>
 
-            <circle cx="10" cy="60" r="10" fill="dimgray" />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Caracter actual</span>
+                </div>
+                <input id="currentChar" type="text" class="form-control" disabled>
+            </div>
 
-            <line x1="10" y1="60" x2="90" y2="60" stroke="dimgray"
-                  stroke-width="8" marker-end="url(#arrowhead)" />
+            <br />
+            <br />
+            <br />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Tokens</span>
+                </div>
+                <textarea id="tokenList" class="form-control" aria-label="Tokens" style="height: 450px;" disabled></textarea>
+            </div>
+        </div>
 
-
-            <g id="state0">
-                <circle cx="150" cy="60" r="40" stroke="dimgray" stroke-width="4" fill="white" />
-                <text x="150" y="60" text-anchor="middle" stroke="dimgray" stroke-width="1px" dy=".3em">S0</text>
-            </g>
-
-            <text x="260" y="15" text-anchor="middle" stroke="dimgray" stroke-width="1px" dy=".3em">A-Za-Z_</text>
-
-            <line x1="190" y1="60" x2="320" y2="60" stroke="dimgray"
-                  stroke-width="8" marker-end="url(#arrowhead)" />
-
-
-            <g id="state1">
-                <circle cx="380" cy="60" r="40" stroke="dimgray" stroke-width="4" fill="white" />
-                <circle cx="380" cy="60" r="35" stroke="dimgray" stroke-width="4" fill="white" />
-                <text x="380" y="60" text-anchor="middle" stroke="dimgray" stroke-width="1px" dy=".3em">S1</text>
-            </g>
-
-            <path id="curve" d="M 420 40 C 440 40, 440 80, 420 80" stroke="dimgray" stroke-width="4" stroke-linecap="round" fill="transparent"></path>
-
-            <text x="480" y="25" text-anchor="middle" stroke="dimgray" stroke-width="1px" dy=".3em">0-9A-Za-Z_</text>
-
-
-            <g id="state2">
-                <circle cx="380" cy="200" r="40" stroke="dimgray" stroke-width="4" fill="white" />
-                <text x="380" y="200" text-anchor="middle" stroke="dimgray" stroke-width="1px" dy=".3em">S2</text>
-            </g>
-
-            <text x="290" y="105" text-anchor="middle" stroke="dimgray" stroke-width="1px" dy=".3em">+, -</text>
-
-            <line x1="190" y1="60" x2="325" y2="170" stroke="dimgray"
-                  stroke-width="8" marker-end="url(#arrowhead)" />
-        </svg>
+        <div class="column2">
+            <svg data-version="6.5" use-custom-elements="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" height="100%" width="100%" id="IDI_133ls0w" class="showed">
+                <defs>
+                    <linearGradient id="gradient_2vcqw1c" x1="0" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)" spreadMethod="pad">
+                        <stop offset="0" stop-color="#000000" stop-opacity="1"></stop>
+                        <stop offset="1" stop-color="#FFFFFF" stop-opacity="1"></stop>
+                    </linearGradient>
+                    <linearGradient id="gradient_38txz0y" x1="0" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)" spreadMethod="pad">
+                        <stop offset="0" stop-color="#000000" stop-opacity="1"></stop>
+                        <stop offset="1" stop-color="#FFFFFF" stop-opacity="1"></stop>
+                    </linearGradient>
+                    <radialGradient id="gradient_4m2219c" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)" spreadMethod="pad">
+                        <stop offset="0" stop-color="#000000" stop-opacity="1"></stop>
+                        <stop offset="1" stop-color="#FFFFFF" stop-opacity="1"></stop>
+                    </radialGradient>
+                    <pattern id="pattern_5iewa8n" x="0" y="0" patternUnits="userSpaceOnUse" width="30" height="30" patternTransform="rotate(0) scale(1) ">
+                        <rect transform="matrix(1,0,0,1,0,0)" width="15" height="15" stroke-width="0" stroke="none" fill="rgb(230, 186, 154)"></rect>
+                        <rect transform="matrix(1,0,0,1,15,0)" width="15" height="15" stroke-width="0" stroke="none" fill="rgb(170, 127, 102)"></rect>
+                        <rect transform="matrix(1,0,0,1,0,15)" width="15" height="15" stroke-width="0" stroke="none" fill="rgb(127, 89, 89)"></rect>
+                        <rect transform="matrix(1,0,0,1,15,15)" width="15" height="15" stroke-width="0" stroke="none" fill="rgb(192, 91, 90)"></rect>
+                    </pattern>
+                    <linearGradient id="gradient_66s5ylb" x1="0" y1="0.5" x2="1" y2="0.5" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)" spreadMethod="pad">
+                        <stop offset="0" stop-color="#000000" stop-opacity="1"></stop>
+                        <stop offset="1" stop-color="#FFFFFF" stop-opacity="1"></stop>
+                    </linearGradient>
+                    <radialGradient id="gradient_738rl3i" cx="0.5" cy="0.5" r="0.5" gradientUnits="objectBoundingBox" gradientTransform="matrix(1 0 0 1 0 0)" spreadMethod="pad">
+                        <stop offset="0" stop-color="#000000" stop-opacity="1"></stop>
+                        <stop offset="1" stop-color="#FFFFFF" stop-opacity="1"></stop>
+                    </radialGradient>
+                </defs>
+                <g class="page-list showable-children">
+                    <g class="page showed" custom-element="page-svg">
+                        <g class="content" transform="matrix(1.17388 0 0 1.17388 295.157 26.827)">
+                            <g transform="matrix(1,0,0,1,0,0)" data-layer-name="untitled layer" data-layer-color="#ff7f00" class="layer" custom-element="layer-svg" active="">
+                                <ellipse id="state_outer_circle_1" transform="matrix(1 0 0 1 164.942 180.82)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" class=""></ellipse>
+                                <ellipse id="state_inner_circle_1" transform="matrix(1 0 0 1 165.914 179.848)" rx="30.62278481012659" ry="27.706329113924042" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" class=""></ellipse>
+                                <ellipse id="state_outer_circle_3" transform="matrix(1 0 0 1 324.593 325.671)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_inner_circle_3" transform="matrix(1 0 0 1 325.565 324.699)" rx="30.62278481012659" ry="27.706329113924042" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_5" transform="matrix(1 0 0 1 637.517 326.316)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_inner_circle_5" transform="matrix(1 0 0 1 638.489 325.344)" rx="30.62278481012659" ry="27.706329113924042" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_0" transform="matrix(1 0 0 1 166.886 323.836)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_4" transform="matrix(1 0 0 1 478.411 325.453)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_6" transform="matrix(1 0 0 1 321.523 470.716)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_8" transform="matrix(1 0 0 1 634.446 471.361)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_inner_circle_8" transform="matrix(1 0 0 1 635.418 470.389)" rx="30.62278481012659" ry="27.706329113924042" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_7" transform="matrix(1 0 0 1 475.341 470.498)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_9" transform="matrix(1 0 0 1 459.504 178.876)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <ellipse id="state_outer_circle_2" transform="matrix(1 0 0 1 164.942 474.728)" rx="45.205064218255536" ry="39.85822952849956" stroke-width="1" stroke="#000000" fill="#FFFFFF" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="" class=""></ellipse>
+                                <text transform="matrix(1 0 0 1 366.952 343.874)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" text-align="left" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 210.147 343.279)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 522.015 344.538)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 522.015 491.939)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 363.275 491.939)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(0.00482576 0.999988 -0.999988 0.00482576 301.843 363.899)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(0.00482576 0.999988 -0.999988 0.00482576 143.103 360.119)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1.29518 -1.43761 1.43761 1.29518 225.202 473.868)" width="58727.70148243585" height="10276.603985130763" font-family="Roboto" font-size="7047.3241778922975" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="" stroke-width="587.2770148243579" contenteditable="true">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(-1.33998 1.39595 -1.39595 -1.33998 422.583 327.809)" width="58727.70148243585" height="10276.603985130763" font-family="Roboto" font-size="7047.3241778922975" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" stroke-width="587.2770148243579" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(-1.44705 -1.28463 1.28463 -1.44705 621.533 272.458)" width="58727.70148243585" height="10276.603985130763" font-family="Roboto" font-size="7047.3241778922975" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" stroke-width="587.2770148243579" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1.02249 -1.09065 1.09065 1.02249 378.977 315.684)" width="107908.32518439657" height="18882.590270460572" font-family="Roboto" font-size="12948.99902212758" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" stroke-width="1079.0832518439647" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(-1.02249 1.09065 -1.09065 -1.02249 385.114 180.355)" width="107908.32518439657" height="17.557342529296875" font-family="Roboto" font-size="12948.99902212758" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" stroke-width="1079.0832518439647" data-css-class="" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" text-align="left" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(1.33425e-7 -1 1 1.33425e-7 185.294 287.056)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <text transform="matrix(0.999947 0.0103405 -0.0103405 0.999947 53.0992 340.392)" width="100" height="17.498733520507812" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="53pt" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">→</tspan>
+                                </text>
+                                <g transform="matrix(0.999983 0.00591112 -0.00591112 0.999983 211.938 179.149)" custom-element="arc-object" stroke="#000000" stroke-width="1" fill="none" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" class="">
+                                    <path data-name="arc-fill" d="M -3.571628348029163e-15 -19.443038940429688 A 19.443038940429688 19.443038940429688 0 0 1 5.9527137722097806e-15 19.443038940429688L0 0 Z" stroke="none" transform="matrix(1 0 0 1 0 0)" class=""></path>
+                                    <path data-name="arc-stroke" fill="none" d="M -3.571628348029163e-15 -19.443038940429688 A 19.443038940429688 19.443038940429688 0 0 1 5.9527137722097806e-15 19.443038940429688" transform="matrix(1 0 0 1 0 0)"></path>
+                                </g>
+                                <line x1="209.05601265822781" y1="155.52516811708858" x2="211.11898734177214" y2="145.82278481012656" stroke-width="1" stroke="#000000" stroke-linecap="butt" class="" transform="matrix(0.999983 0.00591112 -0.00591112 0.999983 0.117613 6.70486)"></line>
+                                <line x1="211.1190025386251" y1="145.82278410274793" x2="203.2433352152228" y2="146.77347163163748" stroke-width="1" stroke="#000000" stroke-linecap="butt" class="" transform="matrix(0.999983 0.00591112 -0.00591112 0.999983 0.117613 6.70486)"></line>
+                                <line x1="209.0559988112894" y1="155.52516487033085" x2="203.2433352152228" y2="146.77347163163748" stroke-width="1" stroke="#000000" stroke-linecap="butt" class="" transform="matrix(0.999983 0.00591112 -0.00591112 0.999983 0.117613 6.70486)"></line>
+                                <g transform="matrix(1 0 0 1 685.192 325.185)" custom-element="arc-object" stroke="#000000" stroke-width="1" fill="none" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="">
+                                    <path data-name="arc-fill" d="M -3.571628348029163e-15 -19.443038940429688 A 19.443038940429688 19.443038940429688 0 0 1 5.9527137722097806e-15 19.443038940429688L0 0 Z" stroke="none" transform="matrix(1 0 0 1 0 0)" data-css-class="" class=""></path>
+                                    <path data-name="arc-stroke" fill="none" d="M -3.571628348029163e-15 -19.443038940429688 A 19.443038940429688 19.443038940429688 0 0 1 5.9527137722097806e-15 19.443038940429688" transform="matrix(1 0 0 1 0 0)"></path>
+                                </g>
+                                <line x1="209.05601265822781" y1="155.52516811708858" x2="211.11898734177214" y2="145.82278481012656" stroke-width="1" stroke="#000000" stroke-linecap="butt" transform="matrix(1 0 0 1 472.356 153.996)" data-css-class="" class=""></line>
+                                <line x1="211.1190025386251" y1="145.82278410274793" x2="203.2433352152228" y2="146.77347163163748" stroke-width="1" stroke="#000000" stroke-linecap="butt" transform="matrix(1 0 0 1 472.356 153.996)" data-css-class="" class=""></line>
+                                <line x1="209.0559988112894" y1="155.52516487033085" x2="203.2433352152228" y2="146.77347163163748" stroke-width="1" stroke="#000000" stroke-linecap="butt" transform="matrix(1 0 0 1 472.356 153.996)" data-css-class="" class=""></line>
+                                <g transform="matrix(-0.604908 -0.796296 0.796296 -0.604908 291.589 286.559)" custom-element="arc-object" stroke="#000000" stroke-width="1" fill="none" stroke-opacity="1" fill-opacity="1" stroke-linecap="butt" stroke-linejoin="miter" data-css-class="">
+                                    <path data-name="arc-fill" d="M -3.571628348029163e-15 -19.443038940429688 A 19.443038940429688 19.443038940429688 0 0 1 5.9527137722097806e-15 19.443038940429688L0 0 Z" stroke="none" transform="matrix(1 0 0 1 0 0)" data-css-class="" class=""></path>
+                                    <path data-name="arc-stroke" fill="none" d="M -3.571628348029163e-15 -19.443038940429688 A 19.443038940429688 19.443038940429688 0 0 1 5.9527137722097806e-15 19.443038940429688" transform="matrix(1 0 0 1 0 0)"></path>
+                                </g>
+                                <line x1="209.05601265822781" y1="155.52516811708858" x2="211.11898734177214" y2="145.82278481012656" stroke-width="1" stroke="#000000" stroke-linecap="butt" transform="matrix(-0.604908 -0.796296 0.796296 -0.604908 284.018 559.592)" data-css-class=""></line>
+                                <line x1="211.1190025386251" y1="145.82278410274793" x2="203.2433352152228" y2="146.77347163163748" stroke-width="1" stroke="#000000" stroke-linecap="butt" transform="matrix(-0.604908 -0.796296 0.796296 -0.604908 284.018 559.592)" data-css-class=""></line>
+                                <line x1="209.0559988112894" y1="155.52516487033085" x2="203.2433352152228" y2="146.77347163163748" stroke-width="1" stroke="#000000" stroke-linecap="butt" transform="matrix(-0.604908 -0.796296 0.796296 -0.604908 284.018 559.592)" data-css-class=""></line>
+                                <text transform="matrix(1 0 0 1 154.575 331.029)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" text-align="left" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">S0</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 156.261 184.336)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" opacity="1" fill="#000" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" text-align="left" font-weight="400" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">S1</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 152.671 482.018)" width="100.00000000000006" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S2</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 315.536 329.241)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S3</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 465.768 330.201)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S4</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 626.557 331.484)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S5</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 305.356 479.641)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S6</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 460.436 477.635)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S7</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 622.465 477.382)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S8</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 449.615 184.773)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">S9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 215.497 139.855)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">A-Za-z0-9_</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 86.283 260.822)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">A-Za-z_</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 112.546 391.279)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">+, -</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 196.755 390.868)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">1-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 217.847 293.018)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">1-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 274 252.144)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">0-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 394.593 304.213)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">.</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 297.345 407.97)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">E</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 537.401 501.903)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" class="" fill-opacity="1">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">0-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 429.212 406.493)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">E</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 719.703 317.046)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" x="0" dy="0">0-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 385.77 505.57)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" data-css-class="">
+                                    <tspan x="0" dy="0">+, -</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 529.715 358.168)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" data-css-class="" class="">
+                                    <tspan x="0" dy="0">0-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 335.985 224.191)" width="100" height="4.25938606262207" font-family="Roboto" font-size="18" font-style="normal" font-weight="700" text-align="left" fill="#444444" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="false" fill-opacity="1" data-css-class="" class="">
+                                    <tspan x="0" dy="0">0-9</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 403.914 273.088)" width="100" height="4.25938606262207" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" class="">
+                                    <tspan data-start-offset="0" style="white-space: pre;" opacity="1" fill="#444444" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" text-align="left" font-weight="700" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">+, -</tspan>
+                                    <tspan data-start-offset="4" style="white-space: pre;" opacity="1" fill="#444444" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" text-align="left" font-weight="700" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal">, /</tspan>
+                                    <tspan data-start-offset="7" style="white-space: pre;" opacity="1" fill="#444444" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" text-align="left" font-weight="700" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal">, *</tspan>
+                                </text>
+                                <text transform="matrix(1 0 0 1 570.254 250.599)" width="100" height="4.25938606262207" font-family="Roboto" font-size="12" font-style="normal" font-weight="400" text-align="left" fill="#000" text-anchor="start" custom-element="svg-text" data-mantain-aspect-ratio="true" data-use-rich-text="true" data-css-class="" class="">
+                                    <tspan opacity="1" fill="#444444" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" font-weight="700" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal" x="0" dy="0">+, -</tspan>
+                                    <tspan opacity="1" fill="#444444" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" font-weight="700" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal">, /</tspan>
+                                    <tspan opacity="1" fill="#444444" fill-opacity="1" stroke="none" stroke-opacity="1" stroke-width="0" font-family="Roboto" text-decoration="none" font-size="18" font-weight="700" font-style="normal" letter-spacing="0" word-spacing="0" line-height="normal">, *</tspan>
+                                </text>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+        </div>
     </div>
 </body>
 </html>
