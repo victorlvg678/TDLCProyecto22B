@@ -20,6 +20,7 @@ const statesList = [
 let tokens = Array();
 
 var tokenCurrentState = 0;
+var prevState = 0;
 
 function getInput() {
     let input = document.getElementById("inputString");
@@ -33,15 +34,33 @@ function getInput() {
     lexicalAnalyzer.input = input.value;
 }
 
+function updateTransitions() {
+    let transitions = document.getElementById("transitions");
+    let transitionsListDisplay = document.getElementById("transitionsListDisplay");
+
+    if (transitions != null)
+        transitions.value = "S" + prevState + "->S" + tokenCurrentState;
+
+    if (transitionsListDisplay != null) {
+        transitionsListDisplay.value += "S" + prevState + "->";
+        if (lexicalAnalyzer.currentChar == lexicalAnalyzer.input.length)
+            transitionsListDisplay.value += "S" + tokenCurrentState;
+    }
+}
+
+
 function clearInputTextbox() {
     clearStateAutomata();
     let input = document.getElementById("inputString");
     let charRead = document.getElementById("currentChar");
     let tokenList = document.getElementById("tokenList");
+    let transitions = document.getElementById("transitions");
+    let transitionsListDisplay = document.getElementById("transitionsListDisplay");
 
     lexicalAnalyzer = new LexicalAnalyzer();
     tokenCurrentState = 0;
     tokens = Array();
+    prevState = 0;
 
     if (input != null) {
         input.disabled = false;
@@ -53,6 +72,12 @@ function clearInputTextbox() {
 
     if (tokenList != null)
         tokenList.value = "";
+
+    if (transitions != null)
+        transitions.value = "";
+
+    if (transitionsListDisplay != null)
+        transitionsListDisplay.value = "";
 }
 
 
@@ -148,6 +173,8 @@ function getNextState() {
                 updateCurrentCharDisplay();
                 updateStateAutomata();
                 updateTokenList();
+                updateTransitions();
+                prevState = data.state;
             });
     }
     updateStateAutomata();
@@ -177,6 +204,8 @@ async function analyzeString() {
         updateCurrentCharDisplay();
         updateStateAutomata();
         updateTokenList();
+        updateTransitions();
+        prevState = response.state;
     }
     updateStateAutomata();
 }
